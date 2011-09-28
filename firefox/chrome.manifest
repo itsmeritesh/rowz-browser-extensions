@@ -1,0 +1,6 @@
+content firefox_extension chrome/ contentaccessible=yes
+style chrome://global/content/customizeToolbar.xul chrome://firefox_extension/content/button.css
+
+# Firefox
+overlay	chrome://browser/content/browser.xul chrome://firefox_extension/content/button.xul
+

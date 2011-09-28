@@ -1,0 +1,9 @@
+
+task zip << {
+    ant.zip(destfile: 'RowzFirefoxAddon.xpi') {
+        fileset(dir: 'firefox') {
+        }
+    }
+}
+
+

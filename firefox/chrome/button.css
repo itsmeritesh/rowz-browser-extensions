@@ -1,0 +1,10 @@
+#rowzButton,
+#wrapper-rowzButton
+  {list-style-image: url("chrome://firefox_extension/content/RowzButton.png");}
+
+/* common style for all custom buttons */
+.custombutton                  
+  {-moz-image-region: rect( 0px 16px 16px  0px);}
+
+.custombutton:hover     
+  {-moz-image-region: rect(16px 32px 32px  16px);}

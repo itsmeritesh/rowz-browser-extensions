@@ -1,0 +1,32 @@
+<html> 
+ <head> 
+ <style>
+	
+ </style>
+    <script type="text/javascript">      
+      
+      function el(elementid) { return document.getElementById(elementid); }
+      function onSelection(text) { 
+		chrome.tabs.getSelected(null, function(tab) {
+		/*	el('popupTitle').value = tab.title;
+			el('popupUrl').value = tab.url;
+			el('popupDescription').value = text;
+			el('output').style.display = ""; */
+			var callString="http://rowz.in/firefox/save?";
+			callString+='title='+encodeURIComponent(tab.title);
+			callString+='&url='+encodeURIComponent(tab.url);
+			callString+='&description='+encodeURIComponent(text);	
+			
+			newWin = window.open(callString,'newWin','toolbar=no,status=no,menubar=no,location=no,scrollbars=no,resizable=yes,height=440px,width=610px');
+			window.close();
+		});
+		} 
+    chrome.extension.getBackgroundPage().getSelection(onSelection); 
+      
+  
+    </script> 
+  </head> 
+  <body width="320px" height="500px">
+   
+  </body> 
+</html> 

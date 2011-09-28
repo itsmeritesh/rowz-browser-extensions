@@ -1,0 +1,52 @@
+<html> 
+  <head> 
+    <script src="xhrproxy.js"></script>
+    <script type="text/javascript"> 
+    
+      var debug = false;
+      var selection_callbacks = [];
+      
+      // Cross site AJAX requests in Chrome extensions can be done only in background.html and not content scripts
+      setupXHRProxy();
+     //end of Cross site AJAX functions
+     
+      
+      function getRequestParameter(URL, name){
+    	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(URL))
+    	      return decodeURIComponent(name[1]);
+    	 };
+      
+      function getSelection(callback) { 
+        selection_callbacks.push(callback); 
+        chrome.tabs.executeScript(null, { file: "content_script.js" }); 
+       };
+      
+       chrome.extension.onRequest.addListener(function (request) { 
+		//alert("got selection: " + request);
+        var callback = selection_callbacks.shift(); 
+        callback(request); 
+      	}); 
+      
+      function checkForValidUrl(tabId, changeInfo, tab){
+    	  
+    	  var rex = new RegExp("^(((http|https)(:\/\/))|(www)(\.)|((http|https)(:\/\/))(www)(\.))(google|bing)");
+    	  
+    	  //This method gets called twice for changeInfor.status = (loading, complete). we need to run when complete.
+    	  if(changeInfo.status=='complete' && rex.test(tab.url)){
+    		  var q = getRequestParameter(tab.url, "q");
+    		  if(q!=undefined && q!=""){
+    		  	if(debug) alert('On Tab id =' + tabId + ' Query= ' + q + '  and the changeInfo is =' + changeInfo.status);
+    		  	if(debug) alert(' Query =' + q);
+    		  	chrome.tabs.executeScript(null, {file: "insertRowzFrame.js"});
+    		  }
+    	  }
+      };
+      
+      //listens to all changes in all tabs for url
+      chrome.tabs.onUpdated.addListener(checkForValidUrl);
+      
+    </script> 
+  </head> 
+  <body> 
+  </body> 
+</html> 

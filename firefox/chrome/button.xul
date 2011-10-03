@@ -7,13 +7,9 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/javascript"
-  src="chrome://firefox_extension/content/button.js"/>
-<script type="application/javascript"
-  src="chrome://firefox_extension/content/checkforum.js"/>
+  src="chrome://firefox_extension/content/rowz_search_pane.js"/>
 <script  type="application/javascript"
   src="chrome://firefox_extension/content/savetomenu.js"/>
-<script  type="application/javascript"
-  src="chrome://firefox_extension/content/togglerowz.js"/>
 
 <!-- Firefox -->
 <toolbarpalette id="BrowserToolbarPalette">
@@ -31,7 +27,7 @@
 	<popup id="contentAreaContextMenu">
 		<menuitem id="save-to-rowz" label="Save to Rowz"
 		insertafter="context-stop"
-		oncommand="bookmarkThisPage()"/>
+		oncommand="rowzExtension.bookmarkThisPage()"/>
 	</popup>
 
 </overlay>

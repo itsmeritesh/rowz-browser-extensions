@@ -8,8 +8,6 @@
 
 <script type="application/javascript"
   src="chrome://firefox_extension/content/rowz_search_pane.js"/>
-<script  type="application/javascript"
-  src="chrome://firefox_extension/content/savetomenu.js"/>
 
 <!-- Firefox -->
 <toolbarpalette id="BrowserToolbarPalette">
@@ -20,7 +18,7 @@
 <toolbarbutton id="rowzButton"
   label="Rowz"
   tooltiptext="Bookmark on Rowz"
-  oncommand="bookmarkThisPage()"
+  oncommand="rowzExtension.bookmarkThisPage()"
   class="toolbarbutton-1 chromeclass-toolbar-additional custombutton"
   />
 

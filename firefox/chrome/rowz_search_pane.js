@@ -1,10 +1,9 @@
-window.addEventListener("load", function() { myExtension.init(); }, false);
+window.addEventListener("load", function() { rowzExtensionListener.init(); }, false);
 
 if (typeof rowzExtension == "undefined") {  
   var rowzExtension = {  
    //make this false to remove all logging//make this false to remove all logging
    debug:false,
-   
    
    appendToggleScriptToHead : function(doc){
   	var togglerowzscript = doc.createElement("script");
@@ -143,29 +142,45 @@ if (typeof rowzExtension == "undefined") {
   };    
 };  
 
+
  
-var myExtension = {		
+var rowzExtensionListener = {		   
 		
   init: function() {
     var appcontent = document.getElementById("appcontent");   // FF only
     if(appcontent)
-      appcontent.addEventListener("DOMContentLoaded", myExtension.onPageLoad, true);    
+      appcontent.addEventListener("DOMContentLoaded", rowzExtensionListener.onPageLoad, true);    
   },
   
+  showFirefoxContextMenu : function(event){
+       		if(rowzExtension.debug) Firebug.Console.log("showFirefoxContextMenu");
+		var saveToRowz = document.getElementById("save-to-rowz");
+		saveToRowz.hidden = (gContextMenu.onImage || gContextMenu.onLink || gContextMenu.onTextInput || gContextMenu.onMathML ||gContextMenu.onMailtoLink);
+       		if(rowzExtension.debug) Firebug.Console.log(saveToRowz.hidden);
+	        event.preventDefault();
+  },
 
+  placeSaveToRowzContextMenu: function(event) {
+	  Firebug.Console.log("onFirefoxLoad");
+	  document.getElementById("contentAreaContextMenu").addEventListener("popupshowing",function() { rowzExtensionListener.showFirefoxContextMenu(event); }, false);
+  },
 
   onPageLoad: function(aEvent) {
+  
      var doc = aEvent.originalTarget; 
     // doc is document that triggered "onload" event
     // do something with the loaded page.
     // doc.location is a Location object (see below for a link).
     // You can use it to make your code executed on certain pages only.
     
-	
+    //code to place the right-click context menu for the extension
+    rowzExtensionListener.placeSaveToRowzContextMenu(aEvent);
+   
 
-	if(rowzExtension.debug) Firebug.Console.log("DOM Load done");
+    if(rowzExtension.debug) Firebug.Console.log("DOM Load done");
+    
 	
-    var rex = new RegExp("^(((http|https)(:\/\/))|(www)(\.)|((http|https)(:\/\/))(www)(\.))(google|bing)");
+    var rex = new RegExp("^(((http|https)(:\/\/))|(www)(\.)|((http|https)(:\/\/))(www)(\.))(google|bing)(.+?)(\/)(search\?)");
     
     if(rowzExtension.debug) Firebug.Console.log("doc.location.href = " + doc.location.href);
     if(rowzExtension.debug) Firebug.Console.log("doc.location.search = " + doc.location.search);
@@ -200,7 +215,7 @@ var myExtension = {
 
     
     // add event listener for page unload 
-    aEvent.originalTarget.defaultView.addEventListener("unload", function(){ myExtension.onPageUnload(); }, true);
+    aEvent.originalTarget.defaultView.addEventListener("unload", function(){ rowzExtensionListener.onPageUnload(); }, true);
   },
 
   onPageUnload: function(aEvent) {

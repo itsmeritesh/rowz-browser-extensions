@@ -1,6 +1,6 @@
 {
   "name": "Rowz Extension",
-  "version": "1.1",
+  "version": "1.4.1",
   "description": "Rowz Chrome Extension",
   "icons": {
   	   "16": "icon.png",
@@ -22,7 +22,7 @@
 "content_scripts": [
     {   
       "matches": ["http://*/*","https://*/"],
-      "js": ["xhrproxy.js","content_script.js"]
+      "js": ["content_script.js"]
     }
   ]
 }

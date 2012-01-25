@@ -1,15 +1,9 @@
 <html> 
   <head> 
-    <script src="xhrproxy.js"></script>
     <script type="text/javascript"> 
     
       var debug = false;
       var selection_callbacks = [];
-      
-      // Cross site AJAX requests in Chrome extensions can be done only in background.html and not content scripts
-      setupXHRProxy();
-     //end of Cross site AJAX functions
-     
       
       function getRequestParameter(URL, name){
     	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(URL))
@@ -29,7 +23,7 @@
       
       function checkForValidUrl(tabId, changeInfo, tab){
     	  
-    	  var rex = new RegExp("^(((http|https)(:\/\/))|(www)(\.)|((http|https)(:\/\/))(www)(\.))(google|bing)");
+    	  var rex = new RegExp("^(((http|https)(:\/\/))|(www)(\.)|((http|https)(:\/\/))(www)(\.))(google|bing)(.+?)(\/)(search\?)");
     	  
     	  //This method gets called twice for changeInfor.status = (loading, complete). we need to run when complete.
     	  if(changeInfo.status=='complete' && rex.test(tab.url)){

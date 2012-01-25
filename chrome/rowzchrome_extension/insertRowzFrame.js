@@ -63,7 +63,7 @@ function showRowzFrame(query,showPanel, noOfResults){
 		n.style.display = "block";	
 	}				
 	n.style.padding ="0px 3px";
-	n.innerHTML = "<iframe src=\"http://rowz.in/firefox/searchIntegration?query="+ query + "\" width=\"450\" height=\"448\"  style=\"border:0px\"/> " ;		
+	n.innerHTML = "<iframe src=\"http://rowz.in/firefox/searchIntegration?version=1.4&query="+ query + "\" width=\"450\" height=\"448\"  style=\"border:0px\"/> " ;		
 	document.body.appendChild(n);
 };
 	 
@@ -71,26 +71,25 @@ function checkForValidQuery(){
 	var url = window.location.href;
 	var query = getRequestParameter(url,'q');
 	if(query!= undefined && query!='' && document.getElementById('RowzFFDisplayControl')==null){
-		log('Query is =' + query);		
+		log('Query is =' + query);	
 		
-		proxyXHR({
-			  method: 'GET',
-			  url: 'http://rowz.in/getNumberOfResultsForQuery?query='+query,
-			  onComplete: function(status, data) {
-			    if (status == 200) {
-			      log(data);
-			      var resObject = eval('('+data+')');			      
-				  var showPanel = resObject.min;				  
-				  var noOfResults = resObject.nor; 
-			      log('noOfResults =' + noOfResults);
-			      if(noOfResults!=null && !isNaN(noOfResults) && noOfResults>0){
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "http://rowz.in/getNumberOfResultsForQuery?version=1.4&query="+query, false);
+		xhr.onreadystatechange = function() {
+		  if (xhr.readyState == 4) {
+		    // JSON.parse does not evaluate the attacker's scripts.
+		    var resp = JSON.parse(xhr.responseText);
+		    var showPanel = resp.min;				  
+		    var noOfResults = resp.nor; 
+	            log('noOfResults =' + noOfResults);	
+		    if(noOfResults!=null && !isNaN(noOfResults) && noOfResults>0){
 			    	  log('inside');
 			    	  integrateToggleScript();
-			  		  showRowzFrame(query,showPanel, noOfResults);
-			      }
-			    } 
-			  }
-		});						
+		  		  showRowzFrame(query,showPanel, noOfResults);
+		    }
+		  }
+		}
+		xhr.send();
 	}
 };
 

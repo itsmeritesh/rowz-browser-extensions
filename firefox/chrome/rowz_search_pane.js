@@ -88,7 +88,7 @@ if (typeof rowzExtension == "undefined") {
    
    createPaneForQuery: function(doc, query){
 	var pane = doc.createElement('iframe');
-	pane.setAttribute('src','http://rowz.in/firefox/searchIntegration?query='+ query); 
+	pane.setAttribute('src','http://rowz.in/firefox/searchIntegration?version=1.4&query='+ query); 
 	pane.setAttribute('width','450px');
 	pane.setAttribute('height','448px');
 	pane.style.border = "0px";
